@@ -1,7 +1,6 @@
 package io.github.cadnunsdimir.bitcoinmempoolscout.services
 
 import android.os.AsyncTask
-import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -10,8 +9,11 @@ import okhttp3.Request
  */
 class MempoolSizeService : AsyncTask<Void, Void, String>() {
 
-    var callback: MempoolSizeServiceCallback? = null;
+    private var callback: ((String) -> Unit)? = null
 
+    fun setOnFinish(_callback: (String) -> Unit){
+        callback = _callback
+    }
 
     override fun doInBackground(vararg params: Void?): String? {
         val client = OkHttpClient()
@@ -19,8 +21,6 @@ class MempoolSizeService : AsyncTask<Void, Void, String>() {
         var request = Request.Builder()
                 .url("https://blockchain.info/q/unconfirmedcount")
                 .get()
-                .addHeader("cache-control", "no-cache")
-                .addHeader("postman-token", "fbfc4d38-abe7-91bd-effd-e10bd9e97dbc")
                 .build()
 
         var response = client.newCall(request).execute()
@@ -30,11 +30,7 @@ class MempoolSizeService : AsyncTask<Void, Void, String>() {
     override fun onPreExecute() {
         super.onPreExecute()
     }
-    override fun onPostExecute(result: String?) {
-        callback?.done(result)
+    override fun onPostExecute(result: String) {
+        callback?.invoke(result)
     }
-}
-
-interface MempoolSizeServiceCallback{
-    fun done(result: String?)
 }
