@@ -7,13 +7,7 @@ import okhttp3.Request
 /**
  * Created by tiagosilva on 11/11/17.
  */
-class MempoolSizeService : AsyncTask<Void, Void, String>() {
-
-    private var callback: ((String) -> Unit)? = null
-
-    fun setOnFinish(_callback: (String) -> Unit){
-        callback = _callback
-    }
+class MempoolSizeService : AsyncTaskBase<Void, Void, String>() {
 
     override fun doInBackground(vararg params: Void?): String? {
         val client = OkHttpClient()
