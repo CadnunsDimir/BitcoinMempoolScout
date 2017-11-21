@@ -22,7 +22,7 @@ class BTCtoBRLService: AsyncTaskBase<Void, Void, Double>() {
 
         var response = client.newCall(request).execute()
 
-        var btcPrice = response.body()?.string()?.split("id=\"nacional\" value=\"")?.get(1)?.split("\"/>")?.get(0)?.replace(",",".")?.toDouble()
+        var btcPrice = response.body()?.string()?.split("id=\"nacional\" value=\"")?.get(1)?.split("\" style")?.get(0)?.replace(",",".")?.toDouble()
 
         return btcPrice
     }
